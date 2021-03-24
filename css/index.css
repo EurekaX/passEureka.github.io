@@ -1842,6 +1842,10 @@ blockquote footer cite:before {
 #article-container figure.highlight .highlight-tools .code-lang {
   left: 3.8rem !important;
 }
+.article-entry pre,
+.article-entry .highlight {
+  margin-top: 30px;
+}
 .article-sort {
   margin-left: 0.5rem;
   padding-left: 1rem;
