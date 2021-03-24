@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2021-03-24T05:01:03.431Z</updated>
+  <updated>2021-03-24T05:12:01.545Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://example.com/2021/03/23/Java%E5%B9%B6%E5%8F%91-%E9%94%81/"/>
     <id>http://example.com/2021/03/23/Java%E5%B9%B6%E5%8F%91-%E9%94%81/</id>
     <published>2021-03-23T09:18:50.834Z</published>
-    <updated>2021-03-24T05:01:03.431Z</updated>
+    <updated>2021-03-24T05:12:01.545Z</updated>
     
     <content type="html"><![CDATA[<h1 id="synchronized锁之间的对比"><a href="#synchronized锁之间的对比" class="headerlink" title="synchronized锁之间的对比"></a>synchronized锁之间的对比</h1><p>javaSE1.6为了减少获得<u>锁和释放锁所带来的性能消耗</u>，引入了偏向锁和轻量级锁的概念。锁的状态级别依次从低到高是：无锁、偏向锁、轻量级锁、重量级锁状态。锁只能升级无法降级。</p><h2 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h2><p>当一个线程访问同步块并获取锁时，会在对象头和帧栈的锁记录中存储锁偏向的进程ID，以后该线程在进入和退出同步块时就不需要进行CAS操作（compare and swap)来加锁和解锁，只需简单的测试一下对象头中断Mark Word里是否存储着指向当前线程的偏向锁。</p><p>偏向锁采用等到竞争出现才释放锁的机制。当其他线程尝试竞争偏向锁的时候，持有偏向锁的线程才会释放。</p><p>当线程访问同步代码块。首先查看当前锁状态是否是偏向锁(可偏向状态) 1、如果是偏向锁： 1.1、检查当前mark word中记录是否是当前线程id，如果是当前线程id，则获得偏向锁执行同步代码块。 1.2、，如果不是当前线程id，cas操作替换线程id，替换成功获得偏向锁(线程复用)，替换失败锁撤销升级轻量锁(同一类对象多次撤销升级达到阈值20，则批量重偏向)</p><h2 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h2><h2 id="重量级锁"><a href="#重量级锁" class="headerlink" title="重量级锁"></a>重量级锁</h2>]]></content>
     
@@ -37,11 +37,11 @@
   </entry>
   
   <entry>
-    <title></title>
+    <title>Java对象头</title>
     <link href="http://example.com/2021/03/23/Java%E5%AF%B9%E8%B1%A1%E5%A4%B4/"/>
     <id>http://example.com/2021/03/23/Java%E5%AF%B9%E8%B1%A1%E5%A4%B4/</id>
     <published>2021-03-23T09:18:50.830Z</published>
-    <updated>2021-03-23T09:18:13.420Z</updated>
+    <updated>2021-03-24T05:12:37.400Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Java对象头"><a href="#Java对象头" class="headerlink" title="Java对象头"></a>Java对象头</h1><p>Java对象保存在内存中时，由以下三部分组成：1对象头2实例数据3对齐填充字节</p><h2 id="java对象头"><a href="#java对象头" class="headerlink" title="java对象头"></a>java对象头</h2><p>由以下内容组成</p><table><thead><tr><th align="center">长度</th><th align="center">内容</th><th align="center">说明</th></tr></thead><tbody><tr><td align="center">32/64bit</td><td align="center">mark word</td><td align="center">存储hash code或锁信息</td></tr><tr><td align="center">32/64bit</td><td align="center">Class Metadata Address</td><td align="center">对象类型数据的指针</td></tr><tr><td align="center">32/64bit</td><td align="center">Array length</td><td align="center">数组的长度（当前对象为数组）</td></tr></tbody></table><p>在运行期间，Mark Word中存储的数据会随着锁标志位的变化而变化。</p><table>    <tr>        <td rowspan="2">锁状态</td>         <td colspan="2">25bit</td>         <td rowspan="2">4bit</td>         <td>1bit</td>         <td>2bit</td>         </tr>    <tr>        <td>23bit</td>        <td>2bit</td>        <td>是否是偏向锁</td>        <td>锁标志位</td>        </tr><tr>    <td>轻量级锁</td>    <td colspan="4">指向栈中锁记录的指针</td>     <td>00</td></tr><tr>    <td >重量级锁</td>        <td colspan="4">指向互斥量（重量级锁）的指针</td>     <td>10</td></tr><tr>    <td>GC标记</td>    <td colspan="4">空</td>     <td>11</td></tr><tr>    <td>偏向锁</td>    <td>线程ID</td>    <td>Epoch</td>    <td>对象分代年龄</td>    <td>1</td>    <td>01</td>    </tr>]]></content>
     
